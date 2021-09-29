@@ -1,17 +1,24 @@
 package repository
 
 import (
-	"database/sql"
+	"context"
 	"log"
 
-	_ "github.com/lib/pq"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
-var db *sql.DB
+var dbPool *pgxpool.Pool
 
 func init() {
+	var config *pgxpool.Config
 	var err error
-	db, err = sql.Open("postgres", "user=postgres password=419155 dbname=lenashop sslmode=disable")
+
+	config, err = pgxpool.ParseConfig("user=postgres password=419155 dbname=lenashop sslmode=disable")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	dbPool, err = pgxpool.ConnectConfig(context.Background(), config)
 	if err != nil {
 		log.Fatal(err)
 	}

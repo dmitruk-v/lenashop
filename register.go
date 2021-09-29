@@ -61,13 +61,13 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 			render(w, "register-fail.page.html", registerFailPayload{AuthData{isAuth, authCustomer}, vMessages})
 			return
 		}
-		hasCust, err := repository.HasCustomer(r.PostForm.Get("email"))
+		custExists, err := repository.CustomerExists(r.PostForm.Get("email"))
 		if err != nil {
 			fmt.Println(err)
 			http.Error(w, "Sorry, something is going wrong on the server.", 500)
 			return
 		}
-		if hasCust {
+		if custExists {
 			msg := fmt.Sprintf("Customer %q already registered.", r.PostForm.Get("email"))
 			render(w, "register-fail.page.html", registerFailPayload{AuthData{isAuth, authCustomer}, []string{msg}})
 			return

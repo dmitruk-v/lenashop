@@ -1,12 +1,15 @@
 package repository
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"net/url"
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/jackc/pgx/v4"
 )
 
 type Product struct {
@@ -51,10 +54,12 @@ func Products(query url.Values) ([]FullProduct, error) {
 	limitQuery := getLimitQuery(query["limit"])
 
 	dbq := fmt.Sprintf("SELECT * FROM product ORDER BY %s LIMIT %s", sortQuery, limitQuery)
-	rows, err := db.Query(dbq)
+	rows, err := dbPool.Query(context.Background(), dbq)
 	if err != nil {
 		return nil, fmt.Errorf("Products(%v): %v", query, err)
 	}
+	defer rows.Close()
+
 	products, err := collectProducts(rows)
 	if err != nil {
 		return nil, fmt.Errorf("Products(%v): %v", query, err)
@@ -91,7 +96,7 @@ func getLimitQuery(limitParams []string) string {
 }
 
 func ImagesByProductId(id int) ([]ProductImage, error) {
-	rows, err := db.Query("SELECT * FROM product_image WHERE product_id = $1", id)
+	rows, err := dbPool.Query(context.Background(), "SELECT * FROM product_image WHERE product_id = $1", id)
 	if err != nil {
 		return nil, fmt.Errorf("ImagesByProductId(%v): %v", id, err)
 	}
@@ -106,7 +111,7 @@ func ImagesByProductId(id int) ([]ProductImage, error) {
 	return images, nil
 }
 
-func collectProducts(rows *sql.Rows) ([]FullProduct, error) {
+func collectProducts(rows pgx.Rows) ([]FullProduct, error) {
 	var products []FullProduct
 	for rows.Next() {
 		var p Product
@@ -119,6 +124,9 @@ func collectProducts(rows *sql.Rows) ([]FullProduct, error) {
 			return nil, fmt.Errorf("collectProducts(rows): %v", err)
 		}
 		products = append(products, FullProduct{p, images})
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("collectProducts(rows): %v", err)
 	}
 	return products, nil
 }

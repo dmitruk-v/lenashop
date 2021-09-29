@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"time"
@@ -25,7 +26,7 @@ type CustomerOrder struct {
 func Orders() {}
 
 func OrdersByCustomer(customer Customer) ([]CustomerOrder, error) {
-	rows, err := db.Query("SELECT * FROM customer_order WHERE customer_id = $1", customer.CustomerId)
+	rows, err := dbPool.Query(context.Background(), "SELECT * FROM customer_order WHERE customer_id = $1", customer.CustomerId)
 	if err != nil {
 		return nil, fmt.Errorf("OrdersByCustomer(%v): %v", customer, err)
 	}
@@ -41,7 +42,7 @@ func OrdersByCustomer(customer Customer) ([]CustomerOrder, error) {
 }
 
 func AddOrder(order CustomerOrder) error {
-	_, err := db.Exec("INSERT INTO customer_order (customer_id, created_at) VALUES ($1, $2)", order.CustomerId, time.Now())
+	_, err := dbPool.Exec(context.Background(), "INSERT INTO customer_order (customer_id, created_at) VALUES ($1, $2)", order.CustomerId, time.Now())
 	if err != nil {
 		return fmt.Errorf("AddOrder(%v): %v", order, err)
 	}
