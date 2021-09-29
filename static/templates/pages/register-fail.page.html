@@ -1,0 +1,12 @@
+{{ template "baseLayout" . }}
+
+{{ define "title" }} Registration failed {{ end }}
+
+{{ define "main" }}
+<h1>Registration failed</h1>
+<ul>
+  {{ range .Messages }}
+  <li>{{ . }}</li>
+  {{ end }}
+</ul>
+{{ end }}

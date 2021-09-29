@@ -1,0 +1,44 @@
+{{ define "baseLayout" }}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ template "title" . }}</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <div class="logo">lenashop</div>
+      <ul class="main-nav">
+        <li class="main-nav__item"><a href="/" class="link main-nav__link">Home</a></li>
+        <li class="main-nav__item"><a href="/catalog" class="link main-nav__link">Catalog</a></li>
+      </ul>
+      <div class="customer">
+        <ul class="customer-nav">
+          <li class="customer-nav__item"><a href="/register" class="link customer-nav__link">Register</a></li>
+          {{ if .AuthData.IsAuth }}
+          <li class="customer-nav__item"><a href="/logout" class="link customer-nav__link">Logout</a></li>
+          {{ else }}
+          <li class="customer-nav__item"><a href="/login" class="link customer-nav__link">Login</a></li>
+          {{ end }}
+        </ul>
+        {{ if .AuthData.IsAuth }}
+        <a href="/profile" class="link customer__profile">{{ .AuthData.Customer.Email }}</a>
+        {{ end }}
+      </div>
+    </header>
+    <main class="main">
+      {{ template "main" . }}
+    </main>
+    <footer class="footer">By Valeriy Dmitruk</footer>
+  </div>
+  <script src="/assets/js/main.js"></script>
+</body>
+
+</html>
+{{ end }}

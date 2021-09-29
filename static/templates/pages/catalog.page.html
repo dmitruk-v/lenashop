@@ -1,0 +1,71 @@
+{{ template "baseLayout" . }}
+
+{{ define "title" }} Catalog {{ end }}
+
+{{ define "main" }}
+
+<div class="cat-order">
+  <div class="cat-order__section">
+    <div class="cat-order__title">Цена:</div>
+    <ul class="cat-order__list">
+      <li class="cat-order__item">
+        <a href="/catalog?sort=price+asc" class="link cat-order__link">По возрастанию</a>
+      </li>
+      <li class="cat-order__item">
+        <a href="/catalog?sort=price+desc" class="link cat-order__link">По убыванию</a>
+      </li>
+    </ul>
+  </div>
+  <div class="cat-order__section">
+    <div class="cat-order__title">Количество:</div>
+    <ul class="cat-order__list">
+      <li class="cat-order__item">
+        <a href="/catalog?limit=4" class="link cat-order__link">4</a>
+      </li>
+      <li class="cat-order__item">
+        <a href="/catalog?limit=8" class="link cat-order__link">8</a>
+      </li>
+      <li class="cat-order__item">
+        <a href="/catalog?limit=12" class="link cat-order__link">12</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+{{ if (gt (len .Products) 0) }}
+<div class="catalog">
+  <div class="catalog__grid">
+    {{ range .Products }}
+    <div class="catalog__item">
+      <div class="cat-item">
+        <div class="cat-item__img">
+          <img src="{{ (index .Images 0).ImageUrl }}" alt="product image">
+        </div>
+        <a href="/product/{{ .ProductId }}" class="link cat-item__title">{{ .Title }}</a>
+        <div class="cat-item__footer">
+          <div class="cat-item__aside">
+            <div class="cat-item__new-price">{{ .Price }} грн</div>
+            {{ if eq .Quantity 0 }}
+            <div class="cat-item__stock cat-item__stock--out">Out of stock</div>
+            {{ else if lt .Quantity 10 }}
+            <div class="cat-item__stock cat-item__stock--ends">Out soon</div>
+            {{ else if ge .Quantity 10 }}
+            <div class="cat-item__stock cat-item__stock--in">In stock</div>
+            {{ end }}
+          </div>
+          <div class="cat-item__buy">
+            <form action="/order" method="post">
+              <input type="hidden" name="product_id" value="{{ .ProductId }}">
+              <button type="submit" class="button cat-item__btn-buy"></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+  <div class="catalog__more">more items...</div>
+</div>
+{{ else }} Catalog is empty {{ end }}
+
+{{ end }}

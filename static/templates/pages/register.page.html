@@ -1,0 +1,27 @@
+{{ template "baseLayout" . }}
+
+{{ define "title" }} Register new customer {{ end }}
+
+{{ define "main" }}
+<form action="/register" method="post" class="register-form">
+  <div class="form__field">
+    <input type="text" name="email" class="control-input" placeholder="email">
+  </div>
+  <div class="form__field">
+    <input type="text" name="phone" class="control-input" placeholder="phone">
+  </div>
+  <div class="form__field">
+    <input type="text" name="address" class="control-input" placeholder="address">
+  </div>
+  <div class="form__field">
+    <input type="password" name="password" class="control-input" placeholder="password">
+  </div>
+  <div class="form__field">
+    <input type="password" name="password-rep" class="control-input" placeholder="repeat password">
+  </div>
+  <div class="form__field">
+    <button type="submit" class="button button--primary">Submit</button>
+    <button type="reset" class="button">Reset</button>
+  </div>
+</form>
+{{ end }}

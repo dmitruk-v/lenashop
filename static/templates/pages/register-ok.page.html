@@ -1,0 +1,13 @@
+{{ template "baseLayout" . }}
+
+{{ define "title" }} Registration successful {{ end }}
+
+{{ define "main" }}
+<h1>Registration successful</h1>
+<h2>User {{ .NewCustomer.Email }} is registered</h2>
+<ul>
+  <li>{{ .NewCustomer.Email }}</li>
+  <li>{{ .NewCustomer.Phone }}</li>
+  <li>{{ .NewCustomer.Address }}</li>
+</ul>
+{{ end }}

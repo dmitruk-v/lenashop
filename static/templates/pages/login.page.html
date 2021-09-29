@@ -1,0 +1,17 @@
+{{ template "baseLayout" . }}
+
+{{ define "title" }} Login {{ end }}
+
+{{ define "main" }}
+<form action="/login" method="post" class="login-form">
+  <div class="form__field">
+    <input type="text" name="email" class="control-input" placeholder="email">
+  </div>
+  <div class="form__field">
+    <input type="password" name="password" class="control-input" placeholder="password">
+  </div>
+  <div class="form__field">
+    <button type="submit" class="button button--primary">Submit</button>
+  </div>
+</form>
+{{ end }}
