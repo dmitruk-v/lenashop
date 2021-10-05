@@ -16,12 +16,14 @@
       <div class="logo">lenashop</div>
       <ul class="main-nav">
         <li class="main-nav__item"><a href="/" class="link main-nav__link">Home</a></li>
-        <li class="main-nav__item"><a href="/catalog" class="link main-nav__link">Catalog</a></li>
+        <li class="main-nav__item"><a href="/products" class="link main-nav__link">Products</a></li>
+        <li class="main-nav__item"><a href="/register" class="link main-nav__link">Register</a></li>
       </ul>
       <div class="customer">
         <ul class="customer-nav">
-          <li class="customer-nav__item"><a href="/register" class="link customer-nav__link">Register</a></li>
           {{ if .AuthData.IsAuth }}
+          <li class="customer-nav__item"><a href="/cart/products" class="link customer-nav__link">Cart</a></li>
+          <li class="customer-nav__item"><a href="/orders" class="link customer-nav__link">Orders</a></li>
           <li class="customer-nav__item"><a href="/logout" class="link customer-nav__link">Logout</a></li>
           {{ else }}
           <li class="customer-nav__item"><a href="/login" class="link customer-nav__link">Login</a></li>
@@ -38,6 +40,7 @@
     <footer class="footer">By Valeriy Dmitruk</footer>
   </div>
   <script src="/assets/js/main.js"></script>
+  {{ template "js" . }}
 </body>
 
 </html>

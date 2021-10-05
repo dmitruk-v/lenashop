@@ -1,0 +1,40 @@
+{{ template "baseLayout" . }}
+
+{{ define "title" }} Customers {{ end }}
+
+{{ define "main" }}
+<div class="customers">
+  <table class="customers__table">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>email</th>
+        <th>phone</th>
+        <th>address</th>
+        <th>createdAt</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .Customers }}
+      <tr>
+        <td>{{ .CustomerId }}</td>
+        <td>{{ .Email }}</td>
+        <td>{{ .Phone }}</td>
+        <td>{{ .Address }}</td>
+        <td>{{ .CreatedAt }}</td>
+        <td>
+          <form action="/customers/delete" method="post">
+            <input type="hidden" name="customer_id" value="{{ .CustomerId }}">
+            <button type="submit" class="button button--link-red customers__btn-delete">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+</div>
+{{ end }}
+
+{{ define "js" }}
+<script src="/assets/js/customers.js"></script>
+{{ end }}

@@ -1,0 +1,41 @@
+/* base
+-------------------------------------------------------------- */
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+/* images
+-------------------------------------------------------------- */
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* common
+-------------------------------------------------------------- */
+html, body {
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #cccccc;
+}
+
+/* typography
+-------------------------------------------------------------- */
+h1, h2, h3, h4 {
+  margin: 0 0 30px 0;
+}
+h1 { font-size: 32px; }
+h2 { font-size: 28px; }
+h3 { font-size: 24px; }
+h4 { font-size: 20px; }

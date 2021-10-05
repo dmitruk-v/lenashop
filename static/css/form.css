@@ -1,0 +1,39 @@
+/* form
+-------------------------------------------------------------- */
+.form {}
+.form__field {
+  margin-bottom: 15px;
+}
+.form-cols {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+.form-cols__label {
+  width: 100px;
+}
+.form-cols__input {
+  flex: 1
+}
+.control-label {
+  display: inline-block;
+  line-height: 1;
+}
+.control-label--req:after {
+  content: "*";
+  margin-left: 3px;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+  color: #ff0000;
+}
+.control-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 16px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+}
+.control-label + .control-input {
+  margin-top: 5px;
+}

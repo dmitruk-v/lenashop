@@ -1,4 +1,4 @@
-package main
+package customers
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ var emailReg = regexp.MustCompile(`^[a-zA-Z0-9_.]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$`)
 var phoneReg = regexp.MustCompile(`^\d{3}-\d{2}-\d{2}$`)
 var passReg = regexp.MustCompile(`^\S{6,}$`)
 
-func validateRegisterForm(r *http.Request) ([]string, error) {
+func ValidateRegisterForm(r *http.Request) ([]string, error) {
 	var err error
 	var eMsgs []string
 	if err = r.ParseForm(); err != nil {
@@ -36,7 +36,7 @@ func validateRegisterForm(r *http.Request) ([]string, error) {
 	return eMsgs, nil
 }
 
-func validateLoginForm(r *http.Request) ([]string, error) {
+func ValidateLoginForm(r *http.Request) ([]string, error) {
 	var err error
 	var eMsgs []string
 	if err = r.ParseForm(); err != nil {

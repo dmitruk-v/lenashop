@@ -1,9 +1,39 @@
 {{ template "baseLayout" . }}
 
 {{ define "title" }}
-Product
+{{ .Product.Title }}
 {{ end }}
 
 {{ define "main" }}
-<div class="product">Product!</div>
+{{ $p := .Product }}
+<div class="product">
+  <div class="product__aside">
+    {{ range $p.Images }}
+    <div class="product__img">
+      <img src="{{ .ImageUrl }}" alt="">
+    </div>
+    {{ end }}
+  </div>
+  <div class="product__main">
+    <h1 class="product__title">{{ $p.Title }}</h1>
+    <div class="product__desc">{{ $p.Description }}</div>
+    {{ if eq $p.Quantity 0 }}
+    <div class="product__stock product__stock--out">Out of stock</div>
+    {{ else if lt $p.Quantity 10 }}
+    <div class="product__stock product__stock--ends">Out soon</div>
+    {{ else if ge $p.Quantity 10 }}
+    <div class="product__stock product__stock--in">In stock</div>
+    {{ end }}
+    <div class="product__buy">
+      <div class="product__price">{{ $p.Price }} грн</div>
+      <form class="product__form" action="/cart/products/add" method="post">
+        <input type="hidden" name="product_id" value="{{ $p.ProductId }}">
+        <input type="hidden" name="buy_quantity" value="1">
+        <button class="button button--primary" type="submit">Buy</button>
+      </form>
+    </div>
+  </div>
+</div>
 {{ end }}
+
+{{ define "js" }}{{ end }}

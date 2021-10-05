@@ -5,12 +5,14 @@ Order
 {{ end }}
 
 {{ define "main" }}
-<div class="order">
+<div class="orders">
+  {{ if gt (len .Orders) 0 }}
   <ul>
-    {{ range .Products }}
+    {{ range .Orders }}
     <li>{{ . }}</li>
     {{ end }}
   </ul>
+  {{ else }} There are no orders yet {{ end }}
 </div>
 {{ end }}
 

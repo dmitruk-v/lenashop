@@ -92,12 +92,12 @@ CREATE TABLE customer_order (
 	updated_at TIMESTAMP
 );
 
-DROP TABLE IF EXISTS order_has_product CASCADE;
-CREATE TABLE order_has_product (
+DROP TABLE IF EXISTS customer_order_has_product CASCADE;
+CREATE TABLE customer_order_has_product (
 	order_id INT NOT NULL REFERENCES customer_order(order_id),
   product_id INT NOT NULL REFERENCES product(product_id),
   quantity SMALLINT NOT NULL,
-  CONSTRAINT pk PRIMARY KEY(order_id, product_id)
+  CONSTRAINT customer_order_has_product_pk PRIMARY KEY(order_id, product_id)
 );
 -------------------------------------------------------
 -- ORDERS
@@ -114,5 +114,5 @@ CREATE TABLE cart_has_product (
 	cart_id INT NOT NULL REFERENCES cart(cart_id),
   product_id INT NOT NULL REFERENCES product(product_id),
 	quantity INT NOT NULL,
-	CONSTRAINT pk PRIMARY KEY(cart_id, product_id)
+	CONSTRAINT cart_has_product_pk PRIMARY KEY(cart_id, product_id)
 );

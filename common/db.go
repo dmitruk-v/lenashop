@@ -1,4 +1,4 @@
-package repository
+package common
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
-var dbPool *pgxpool.Pool
+var DbPool *pgxpool.Pool
 
 func init() {
 	var config *pgxpool.Config
@@ -18,7 +18,7 @@ func init() {
 		log.Fatal(err)
 	}
 
-	dbPool, err = pgxpool.ConnectConfig(context.Background(), config)
+	DbPool, err = pgxpool.ConnectConfig(context.Background(), config)
 	if err != nil {
 		log.Fatal(err)
 	}

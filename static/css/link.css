@@ -1,0 +1,21 @@
+/* link
+-------------------------------------------------------------- */
+.link,
+.link:link,
+.link:visited {
+  color: #555555;
+}
+.link:hover,
+.link:active {
+  color: #ff0000;
+}
+
+.link--light,
+.link--light:link,
+.link--light:visited {
+  color: #ffffff;
+}
+.link--light:hover,
+.link--light:active {
+  color: #cccccc;
+}

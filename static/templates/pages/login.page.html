@@ -3,11 +3,14 @@
 {{ define "title" }} Login {{ end }}
 
 {{ define "main" }}
+<h1>Login</h1>
 <form action="/login" method="post" class="login-form">
   <div class="form__field">
+    <label class="control-label control-label--req">Email</label>
     <input type="text" name="email" class="control-input" placeholder="email">
   </div>
   <div class="form__field">
+    <label class="control-label control-label--req">Password</label>
     <input type="password" name="password" class="control-input" placeholder="password">
   </div>
   <div class="form__field">
@@ -15,3 +18,5 @@
   </div>
 </form>
 {{ end }}
+
+{{ define "js" }}{{ end }}

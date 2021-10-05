@@ -1,0 +1,58 @@
+/* button
+-------------------------------------------------------------- */
+.button,
+.button:link,
+.button:visited {
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+  border: 0;
+  vertical-align: middle;
+  background-color: #a1a1a1;
+  color: #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 5px;
+}
+.button:hover,
+.button:active {
+  background-color: #777777;
+}
+
+.button--primary,
+.button--primary:link,
+.button--primary:visited {
+  background-color: #c87fff;
+  color: #ffffff;
+}
+.button--primary:hover,
+.button--primary:active {
+  background-color: #a664d8;
+}
+
+.button--red,
+.button--red:link,
+.button--red:visited {
+  background-color: #ff0000;
+  color: #0c3e5f;
+}
+.button--red:hover,
+.button--red:active {
+  background-color: #c3e8ff;
+}
+
+.button--link-red,
+.button--link-red:link,
+.button--link-red:visited {
+  padding: 0;
+  border: 0;
+  vertical-align: initial;
+  background-color: transparent;
+  color: #ff0000;
+}
+.button--link-red:hover,
+.button--link-red:active {
+  background-color: transparent;
+}

@@ -3,20 +3,26 @@
 {{ define "title" }} Register new customer {{ end }}
 
 {{ define "main" }}
-<form action="/register" method="post" class="register-form">
+<h1>Register new customer</h1>
+<form action="/customers/create" method="post" class="form register-form">
   <div class="form__field">
+    <label class="control-label control-label--req">Email</label>
     <input type="text" name="email" class="control-input" placeholder="email">
   </div>
   <div class="form__field">
+    <label class="control-label">Phone</label>
     <input type="text" name="phone" class="control-input" placeholder="phone">
   </div>
   <div class="form__field">
+    <label class="control-label control-label--req">Address</label>
     <input type="text" name="address" class="control-input" placeholder="address">
   </div>
   <div class="form__field">
+    <label class="control-label control-label--req">Password</label>
     <input type="password" name="password" class="control-input" placeholder="password">
   </div>
   <div class="form__field">
+    <label class="control-label control-label--req">Repeat password</label>
     <input type="password" name="password-rep" class="control-input" placeholder="repeat password">
   </div>
   <div class="form__field">
@@ -25,3 +31,5 @@
   </div>
 </form>
 {{ end }}
+
+{{ define "js" }}{{ end }}

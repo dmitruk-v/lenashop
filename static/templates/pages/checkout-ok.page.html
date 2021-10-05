@@ -1,0 +1,12 @@
+{{ template "baseLayout" . }}
+
+{{ define "title" }}
+Checkout success
+{{ end }}
+
+{{ define "main" }}
+<h2>Order #{{ .OrderId }} was successfuly submited</h2>
+<p>We will process it soon and contact with you.</p>
+{{ end }}
+
+{{ define "js" }}{{ end }}
