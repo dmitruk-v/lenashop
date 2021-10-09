@@ -129,6 +129,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.cat-item__img > img:first-child { display: block; }
 .cat-item__img > img:last-child { display: none; }
 .cat-item:hover .cat-item__img > img:first-child { display: none; }
 .cat-item:hover .cat-item__img > img:last-child { display: block; }

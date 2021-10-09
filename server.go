@@ -14,32 +14,47 @@ import (
 
 func serve() {
 
+	mux := http.DefaultServeMux
+
+	// mux.Handle("/bla", authMiddleware(http.HandlerFunc(blaHandler), "Valera"))
+	// mux.HandleFunc("/react", func(w http.ResponseWriter, r *http.Request) {
+	// 	queryParams := url.Values{"sort": []string{"price asc"}, "limit": []string{"20"}}
+	// 	prs, err := products.ProductsWithImages(queryParams)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// 	enc := json.NewEncoder(w)
+	// 	if err := enc.Encode(prs); err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// })
+
 	fs := http.FileServer(http.Dir("./static/"))
-	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
+	mux.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
-	http.HandleFunc("/", home.ViewHandler)
-	http.HandleFunc("/products", products.ViewAllHandler)
-	http.HandleFunc("/product/", products.ViewSingleHandler)
+	mux.HandleFunc("/", home.ViewHandler)
+	mux.HandleFunc("/products", products.ViewAllHandler)
+	mux.HandleFunc("/product/", products.ViewSingleHandler)
 
-	http.HandleFunc("/register", customers.RegisterHandler)
-	http.HandleFunc("/login", customers.LoginHandler)
-	http.HandleFunc("/logout", customers.LogoutHandler)
+	mux.HandleFunc("/register", customers.RegisterHandler)
+	mux.HandleFunc("/login", customers.LoginHandler)
+	mux.HandleFunc("/logout", customers.LogoutHandler)
 
-	http.HandleFunc("/customers", customers.ViewAllHandler)
-	http.HandleFunc("/customers/create", customers.CreateHandler)
-	http.HandleFunc("/customers/update", customers.UpdateHandler)
-	http.HandleFunc("/customers/delete", customers.DeleteHandler)
-	http.HandleFunc("/customer/", customers.ViewSingleHandler)
+	mux.HandleFunc("/customers", customers.ViewAllHandler)
+	mux.HandleFunc("/customers/create", customers.CreateHandler)
+	mux.HandleFunc("/customers/update", customers.UpdateHandler)
+	mux.HandleFunc("/customers/delete", customers.DeleteHandler)
+	mux.HandleFunc("/customer/", customers.ViewSingleHandler)
 
-	http.HandleFunc("/cart/products", cart.ViewHandler)
-	http.HandleFunc("/cart/products/add", cart.AddProductHandler)
-	http.HandleFunc("/cart/products/remove", cart.RemoveProductHandler)
-	http.HandleFunc("/cart/products/update", cart.UpdateQuantityHandler)
+	mux.HandleFunc("/cart/products", cart.ViewHandler)
+	mux.HandleFunc("/cart/products/add", cart.AddProductHandler)
+	mux.HandleFunc("/cart/products/remove", cart.RemoveProductHandler)
+	mux.HandleFunc("/cart/products/update", cart.UpdateQuantityHandler)
 
-	http.HandleFunc("/orders", orders.ViewAllHandler)
-	http.HandleFunc("/checkout", orders.CheckoutHandler)
-	http.HandleFunc("/orders/create", orders.CreateHandler)
-	http.HandleFunc("/orders/delete", orders.DeleteHandler)
+	mux.HandleFunc("/orders", orders.ViewAllHandler)
+	mux.HandleFunc("/checkout", orders.CheckoutHandler)
+	mux.HandleFunc("/orders/create", orders.CreateHandler)
+	mux.HandleFunc("/orders/delete", orders.DeleteHandler)
 
 	// http.HandleFunc("/products/create", adminCreateProductHandler)
 	// http.HandleFunc("/products/update", adminUpdateProductHandler)

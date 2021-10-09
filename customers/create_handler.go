@@ -19,6 +19,7 @@ type registerOkPayload struct {
 	NewCustomer Customer
 }
 
+// Makes a handler to handle creation of customer
 func CreateHandler(w http.ResponseWriter, r *http.Request) {
 	// ----------------------------------------------------------------------
 	// POST: Register customer
