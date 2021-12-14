@@ -1,26 +1,42 @@
 import { useEffect, useState } from "react";
-import { fetchProducts } from "../../api/products";
+import { fetchProducts } from "../api/products";
 
-function useProducts() {
+/**
+ * @typedef {Object} Options
+ * @property {boolean} initialLoad
+ * @property {string} initialQuery
+ * 
+ * @function useProducts
+ * @param {Options} options
+ */
+function useProducts(options = { initialLoad: false, initialQuery: "" }) {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleFetch = () => {
-    setIsLoading(true);
-    fetchProducts().then(products => {
-      setProducts(products);
-      setIsLoading(false);
-    });
-  }
+  const abortController = new AbortController();
 
   useEffect(() => {
-    handleFetch();
+    if (options.initialLoad) {
+      load(options.initialQuery);
+    }
   }, []);
+
+  const load = (query = "") => {
+    setIsLoading(true);
+    fetchProducts(query, abortController)
+      .then(products => {
+        setProducts(products);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error("[useProducts]:", err)
+      });
+  }
 
   return {
     products: products,
-    refresh: handleFetch,
+    load: load,
     isLoadingProducts: isLoading,
+    cancel: abortController.abort,
   };
 }
 

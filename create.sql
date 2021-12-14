@@ -52,6 +52,11 @@ INSERT INTO product (category_id, title, price, quantity, description, created_a
 INSERT INTO product (category_id, title, price, quantity, description, created_at) VALUES (1, 'Брошь Traum 4208-32 Розовая (4820004208327)', 99, 33, 'Аксессуары ТМ "TRAUM" (Украина) Объемная брошь в форме цветка розового цвета с золотым стеблем.', NOW());
 INSERT INTO product (category_id, title, price, quantity, description, created_at) VALUES (1, 'Брошь женская Traum 4209-60 Красная (4820004209607)', 89, 33, 'Женская брошь Traum 4209-60 в виде мака с золотым напылением, покрыта красной и черной эмалью.', NOW());
 
+INSERT INTO product (category_id, title, price, quantity, description, created_at) VALUES (1, 'Брошь женская Traum 4209-63 Голубая (4820004209638)', 109, 25, 'Женская брошь Traum 4209-63 в виде ласточки, покрыта голубой эмалью, декорирована стразами.', NOW());
+INSERT INTO product (category_id, title, price, quantity, description, created_at) VALUES (1, 'Брошь женская Traum 4209-62 Синяя (4820004209621)', 109, 17, 'Женская брошь Traum 4209-62 в виде ласточки, покрыта синей эмалью, декорирована стразами.', NOW());
+INSERT INTO product (category_id, title, price, quantity, description, created_at) VALUES (1, 'Брошь Traum 4209-24 Серебристая (4820004209249)', 125, 85, 'Брошь в виде котенка из сплава темно-серебристого цвета, декорирована стразами. Глазки— черные кристаллы.', NOW());
+INSERT INTO product (category_id, title, price, quantity, description, created_at) VALUES (1, 'Брошь Traum 4209-53 Золотистая (4820004209539)', 99, 51, '', NOW());
+
 DROP TABLE IF EXISTS product_image CASCADE;
 CREATE TABLE product_image (
 	image_id SERIAL PRIMARY KEY,
@@ -81,6 +86,16 @@ INSERT INTO product_image (product_id, image_url, created_at) VALUES (9, '/asset
 INSERT INTO product_image (product_id, image_url, created_at) VALUES (9, '/assets/images/181113505.jpg', NOW());
 INSERT INTO product_image (product_id, image_url, created_at) VALUES (10, '/assets/images/14641217.jpg', NOW());
 INSERT INTO product_image (product_id, image_url, created_at) VALUES (10, '/assets/images/14641240.jpg', NOW());
+
+INSERT INTO product_image (product_id, image_url, created_at) VALUES (11, '/assets/images/78420147.jpg', NOW());
+INSERT INTO product_image (product_id, image_url, created_at) VALUES (11, '/assets/images/78420150.jpg', NOW());
+INSERT INTO product_image (product_id, image_url, created_at) VALUES (12, '/assets/images/14641231.jpg', NOW());
+INSERT INTO product_image (product_id, image_url, created_at) VALUES (12, '/assets/images/14641254.jpg', NOW());
+INSERT INTO product_image (product_id, image_url, created_at) VALUES (13, '/assets/images/13598538.jpg', NOW());
+INSERT INTO product_image (product_id, image_url, created_at) VALUES (13, '/assets/images/13598545.jpg', NOW());
+INSERT INTO product_image (product_id, image_url, created_at) VALUES (14, '/assets/images/117278481.jpg', NOW());
+INSERT INTO product_image (product_id, image_url, created_at) VALUES (14, '/assets/images/117278492.jpg', NOW());
+
 -------------------------------------------------------
 -- ORDERS
 -------------------------------------------------------

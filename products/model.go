@@ -45,7 +45,7 @@ var sortParamReg = regexp.MustCompile(`^(product_id|category_id|title|price|quan
 var limitParamReg = regexp.MustCompile(`^[\d]{1,100}$`)
 
 var defaultOptions = map[string]string{
-	"sort":  "product_id asc",
+	"sort":  "product_id ASC",
 	"limit": "6",
 }
 

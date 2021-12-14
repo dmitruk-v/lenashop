@@ -6,36 +6,31 @@ type CartItem struct {
 }
 
 type Cart struct {
-	CartId int
-	Items  []CartItem
+	CartId     int
+	CustomerId int
+	Items      []CartItem
 }
 
-func (cart *Cart) CreateCartItem(p Product, bq int) CartItem {
-	return CartItem{Product: p, BuyQuantity: bq}
-}
-
-func (cart *Cart) AddItem(product Product, buyQuantity int) {
-	cart.Items = append(cart.Items, cart.CreateCartItem(product, buyQuantity))
-}
-
-func (cart *Cart) RemoveItem(productId int) {
-	var result []CartItem
-	for _, item := range cart.Items {
-		if productId != item.ProductId {
-			result = append(result, item)
-		}
-	}
-	cart.Items = result
-}
-
-func (cart *Cart) UpdateItem(productId int, buyQuantity int) {
-	for _, item := range cart.Items {
-		if productId == item.ProductId {
-			item.BuyQuantity = buyQuantity
-		}
+func NewCart(customerId int) Cart {
+	return Cart{
+		CustomerId: customerId,
+		Items:      make([]CartItem, 0),
 	}
 }
 
-func (cart *Cart) Clear() {
-	cart.Items = nil
+func (cart *Cart) Update(updCart Cart) Cart {
+	items := append(make([]CartItem, 0), updCart.Items...)
+	return Cart{
+		CartId:     updCart.CartId,
+		CustomerId: updCart.CustomerId,
+		Items:      items,
+	}
+}
+
+func (cart *Cart) Clear() Cart {
+	return Cart{
+		CartId:     cart.CartId,
+		CustomerId: cart.CustomerId,
+		Items:      make([]CartItem, 0),
+	}
 }

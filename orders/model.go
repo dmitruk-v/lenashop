@@ -24,7 +24,11 @@ type CartProduct struct {
 
 func Orders(customerId int) ([]Order, error) {
 	ctx := context.Background()
-	rows, err := common.DbPool.Query(ctx, "SELECT * FROM customer_order WHERE customer_id = $1", customerId)
+	q := `
+		SELECT * FROM customer_order
+		WHERE customer_id = $1
+	`
+	rows, err := common.DbPool.Query(ctx, q, customerId)
 	if err != nil {
 		return nil, fmt.Errorf("Orders(%v): %v", customerId, err)
 	}
@@ -42,7 +46,10 @@ func Orders(customerId int) ([]Order, error) {
 
 func OrderById(orderId int) (Order, error) {
 	ctx := context.Background()
-	row := common.DbPool.QueryRow(ctx, "SELECT * FROM customer_order WHERE order_id = $1", orderId)
+	q := `
+		SELECT * FROM customer_order WHERE order_id = $1
+	`
+	row := common.DbPool.QueryRow(ctx, q, orderId)
 	var ord Order
 	if err := row.Scan(&ord.OrderId, &ord.CustomerId, &ord.CreatedAt, &ord.UpdatedAt); err != nil {
 		return ord, fmt.Errorf("OrderById(%v): %v", orderId, err)
@@ -51,7 +58,6 @@ func OrderById(orderId int) (Order, error) {
 }
 
 func CreateOrder(customerId int, cartId int) (int, error) {
-	var orderId int
 	ctx := context.Background()
 	fail := func(err error) error {
 		return fmt.Errorf("CreateOrder(%v, %v): %v", customerId, cartId, err)
@@ -63,13 +69,25 @@ func CreateOrder(customerId int, cartId int) (int, error) {
 	defer tx.Rollback(ctx)
 	// 1. Create customer_order
 	// ----------------------------------------------------
-	row := tx.QueryRow(ctx, "INSERT INTO customer_order (customer_id, created_at) VALUES ($1, $2) RETURNING order_id", customerId, time.Now())
+	var q string
+	var orderId int
+	q = `
+		INSERT INTO customer_order (customer_id, created_at) VALUES ($1, $2)
+		RETURNING order_id
+	`
+	row := tx.QueryRow(ctx, q, customerId, time.Now())
 	if err := row.Scan(&orderId); err != nil {
 		return -1, fail(err)
 	}
 	// 2. Select products from cart
 	// ----------------------------------------------------
-	rows, err := tx.Query(ctx, "SELECT product_id, quantity FROM cart_has_product WHERE cart_id = $1", cartId)
+	q = `
+		SELECT chp.product_id, chp.quantity, p.quantity as stockQuantity
+		FROM cart_has_product chp
+		INNER JOIN product p ON chp.product_id = p.product_id
+		WHERE chp.cart_id = $1
+	`
+	rows, err := tx.Query(ctx, q, cartId)
 	if err != nil {
 		return -1, fail(err)
 	}
@@ -77,22 +95,46 @@ func CreateOrder(customerId int, cartId int) (int, error) {
 	var cps []CartProduct
 	for rows.Next() {
 		var cp CartProduct
-		if err := rows.Scan(&cp.ProductId, &cp.BuyQuantity); err != nil {
+		var stockQuantity int
+		if err := rows.Scan(&cp.ProductId, &cp.BuyQuantity, &stockQuantity); err != nil {
 			return -1, fail(err)
+		}
+		// --- bussiness logic! Check that buy quantity is less than stock quantity
+		if cp.BuyQuantity > stockQuantity {
+			return -1, fail(fmt.Errorf("buy quantity (%v) is bigger than stock quantity (%v) for productId: %v", cp.BuyQuantity, stockQuantity, cp.ProductId))
 		}
 		cps = append(cps, cp)
 	}
 	// 3. Add each product to order
 	// ----------------------------------------------------
+	q = `
+		INSERT INTO customer_order_has_product (order_id, product_id, quantity) VALUES ($1, $2, $3)
+	`
 	for _, cp := range cps {
-		_, err := tx.Exec(ctx, "INSERT INTO customer_order_has_product (order_id, product_id, quantity) VALUES ($1, $2, $3)", orderId, cp.ProductId, cp.BuyQuantity)
+		_, err := tx.Exec(ctx, q, orderId, cp.ProductId, cp.BuyQuantity)
+		if err != nil {
+			return -1, fail(err)
+		}
+	}
+	// --- bussiness logic! Update products with new quantity
+	for _, cp := range cps {
+		q = `
+			UPDATE product
+			SET quantity = quantity - $1
+			WHERE product_id = $2
+		`
+		_, err := tx.Exec(ctx, q, cp.BuyQuantity, cp.ProductId)
 		if err != nil {
 			return -1, fail(err)
 		}
 	}
 	// 4. Clear cart
 	// ----------------------------------------------------
-	_, err = tx.Exec(ctx, "DELETE FROM cart_has_product WHERE cart_id = $1", cartId)
+	q = `
+		DELETE FROM cart_has_product
+		WHERE cart_id = $1
+	`
+	_, err = tx.Exec(ctx, q, cartId)
 	if err != nil {
 		return -1, fail(err)
 	}
@@ -105,7 +147,12 @@ func CreateOrder(customerId int, cartId int) (int, error) {
 func LastCreated(customerId int) (Order, error) {
 	ctx := context.Background()
 	var order Order
-	row := common.DbPool.QueryRow(ctx, "SELECT * FROM customer_order WHERE customer_id = $1 ORDER BY order_id DESC LIMIT 1", customerId)
+	q := `
+		SELECT * FROM customer_order
+		WHERE customer_id = $1
+		ORDER BY order_id DESC LIMIT 1
+	`
+	row := common.DbPool.QueryRow(ctx, q, customerId)
 	if err := row.Scan(&order.OrderId, &order.CustomerId, &order.CreatedAt, &order.UpdatedAt); err != nil {
 		return order, fmt.Errorf("LastCreatedOrder(%v): %v", customerId, err)
 	}
@@ -118,9 +165,9 @@ func Products(orderId int) ([]products.FullProduct, error) {
 		return fmt.Errorf("OrderProducts(%v): %v", orderId, err)
 	}
 	sqlQuery := `
-	SELECT p.* FROM customer_order_has_product cohp
-	INNER JOIN product p ON cohp.product_id = p.product_id
-	WHERE cohp.order_id = $1
+		SELECT p.* FROM customer_order_has_product cohp
+		INNER JOIN product p ON cohp.product_id = p.product_id
+		WHERE cohp.order_id = $1
 	`
 	rows, err := common.DbPool.Query(ctx, sqlQuery, orderId)
 	if err != nil {

@@ -26,7 +26,7 @@
         <div class="cart-item__buy-quantity">
           <form action="/cart/products/update" method="post" class="c-item-quantity">
             <input type="hidden" name="product_id" value="{{ .ProductId }}">
-            <input type="number" name="buy_quantity" max="{{ .Quantity }}" value="{{ .BuyQuantity }}" required class="control-input c-item-quantity__value">
+            <input type="number" name="buy_quantity" min="1" max="{{ .Quantity }}" value="{{ .BuyQuantity }}" required class="control-input c-item-quantity__value">
             <div class="c-item-quantity__single">x {{ .Price }} грн</div>
             <button type="submit" class="button c-item-quantity__set">Set</button>
           </form>
@@ -47,6 +47,7 @@
     </div>
   </div>
   <div class="cart__checkout">
+    <a href="/products" class="button mr-5">Back to catalog</a>
     <a href="/checkout" class="button button--primary">Checkout</a>
   </div>
   {{ else }} <h1>Cart is empty.</h1> {{ end }}

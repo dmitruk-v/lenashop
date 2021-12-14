@@ -6,28 +6,43 @@ import (
 	"net/http"
 
 	"dmitrook.ru/lenashop/cart"
+	"dmitrook.ru/lenashop/common"
 	"dmitrook.ru/lenashop/customers"
 	"dmitrook.ru/lenashop/home"
 	"dmitrook.ru/lenashop/orders"
 	"dmitrook.ru/lenashop/products"
 )
 
+type Server struct {
+	mux http.ServeMux
+}
+
+func (s *Server) WithValidator(v common.Validator, handler http.Handler) http.Handler {
+	// return func(w http.ResponseWriter, r *http.Request) {}
+	return nil
+}
+
+// type AddProductValidator struct{}
+
+// func (apv AddProductValidator) ValidateQuery(r *http.Request)   {}
+// func (apv AddProductValidator) ValidateForm(r *http.Request)    {}
+// func (apv AddProductValidator) ValidateCookies(r *http.Request) {}
+
 func serve() {
+
+	// ------------------------------------------------------------------------
+	// s := Server{}
+	// apv := AddProductValidator{}
+
+	// handler := s.WithValidator(apv, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	// 	apv.ValidateCookies(r)
+	// }))
+	// s.mux.Handle("/cart/products/add", handler)
+	// ------------------------------------------------------------------------
 
 	mux := http.DefaultServeMux
 
 	// mux.Handle("/bla", authMiddleware(http.HandlerFunc(blaHandler), "Valera"))
-	// mux.HandleFunc("/react", func(w http.ResponseWriter, r *http.Request) {
-	// 	queryParams := url.Values{"sort": []string{"price asc"}, "limit": []string{"20"}}
-	// 	prs, err := products.ProductsWithImages(queryParams)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// 	enc := json.NewEncoder(w)
-	// 	if err := enc.Encode(prs); err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// })
 
 	fs := http.FileServer(http.Dir("./static/"))
 	mux.Handle("/assets/", http.StripPrefix("/assets/", fs))
@@ -61,7 +76,7 @@ func serve() {
 	// http.HandleFunc("/products/delete", adminDeleteProductHandler)
 
 	fmt.Println("--- Server listen at 127.0.0.1:4000 ---")
-	if err := http.ListenAndServe("127.0.0.1:4000", nil); err != nil {
+	if err := http.ListenAndServe("0.0.0.0:4000", nil); err != nil {
 		log.Fatal(err)
 	}
 }

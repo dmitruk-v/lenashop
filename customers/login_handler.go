@@ -47,8 +47,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		exp := time.Now().UTC().Add(time.Minute * 10).Format(http.TimeFormat)
-		w.Header().Add("Set-Cookie", fmt.Sprintf("customer=%s; Expires=%v; Secure; HttpOnly;", customer.Email, exp))
-		w.Header().Add("Set-Cookie", fmt.Sprintf("token=%v; Expires=%v; Secure; HttpOnly;", customer.Token, exp))
+		w.Header().Add("Set-Cookie", fmt.Sprintf("customer=%s; Expires=%v; HttpOnly;", customer.Email, exp))
+		w.Header().Add("Set-Cookie", fmt.Sprintf("token=%v; Expires=%v; HttpOnly;", customer.Token, exp))
 		http.Redirect(w, r, "/products", http.StatusFound)
 	}
 }

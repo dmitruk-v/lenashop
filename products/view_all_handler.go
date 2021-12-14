@@ -1,6 +1,7 @@
 package products
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -33,11 +34,21 @@ func ViewAllHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, fmt.Sprintf("Sorry, something wrong happened when fetching products: %v", err), 500)
 			return
 		}
-		payload := viewAllPayload{
+
+		if _, ok := r.Header["X-Requested-With"]; ok {
+			encoder := json.NewEncoder(w)
+			if err := encoder.Encode(products); err != nil {
+				http.Error(w, fmt.Sprintf("Sorry, something wrong happened when encoding json: %v", err), 500)
+				return
+			}
+			return
+		}
+
+		viewAllPayload := viewAllPayload{
 			AuthData: authData,
 			Products: products,
 		}
-		tools.Render(w, "products.page.html", payload)
+		tools.Render(w, "products.page.html", viewAllPayload)
 	}
 }
 
@@ -62,6 +73,5 @@ func appendFromCookies(w http.ResponseWriter, r *http.Request, prefix string) ur
 			w.Header().Add("Set-Cookie", fmt.Sprintf("%s=%s", cookieName, strings.Join(query[key], ",")))
 		}
 	}
-	// fmt.Println(query)
 	return query
 }

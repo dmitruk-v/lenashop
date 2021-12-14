@@ -1,9 +1,15 @@
-package validators
+package common
 
 import (
 	"net/http"
 	"net/url"
 )
+
+type Validator interface {
+	ValidateQuery(r *http.Request)
+	ValidateCookies(r *http.Request)
+	ValidateForm(r *http.Request)
+}
 
 type RequestValidatorFunc func(r *http.Request) (errorMessages []string)
 
