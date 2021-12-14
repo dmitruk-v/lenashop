@@ -3,75 +3,10 @@
 {{ define "title" }} Catalog {{ end }}
 
 {{ define "main" }}
-<div class="cat-order">
-  <div class="cat-order__section">
-    <div class="cat-order__title">Цена:</div>
-    <ul class="cat-order__list">
-      <li class="cat-order__item">
-        <a href="/products?sort=price+asc" class="link cat-order__link">По возрастанию</a>
-      </li>
-      <li class="cat-order__item">
-        <a href="/products?sort=price+desc" class="link cat-order__link">По убыванию</a>
-      </li>
-    </ul>
-  </div>
-  <div class="cat-order__section">
-    <div class="cat-order__title">Количество:</div>
-    <ul class="cat-order__list">
-      <li class="cat-order__item">
-        <a href="/products?limit=4" class="link cat-order__link">4</a>
-      </li>
-      <li class="cat-order__item">
-        <a href="/products?limit=8" class="link cat-order__link">8</a>
-      </li>
-      <li class="cat-order__item">
-        <a href="/products?limit=12" class="link cat-order__link">12</a>
-      </li>
-    </ul>
-  </div>
-</div>
-
 {{ $data := . }}
-
-{{ if (gt (len .Products) 0) }}
-<div class="catalog">
-  <div class="catalog__grid">
-    {{ range .Products }}
-    <div class="catalog__item">
-      <div class="cat-item">
-        <a href="/product/{{ .ProductId }}" class="cat-item__img">
-          <img src="{{ (index .Images 0).ImageUrl }}" alt="product image">
-          <img src="{{ (index .Images 1).ImageUrl }}" alt="product image">
-        </a>
-        <a href="/product/{{ .ProductId }}" class="link cat-item__title">{{ .Title }}</a>
-        <div class="cat-item__footer">
-          <div class="cat-item__aside">
-            <div class="cat-item__new-price">{{ .Price }} грн</div>
-            {{ if eq .Quantity 0 }}
-            <div class="cat-item__stock cat-item__stock--out">Out of stock</div>
-            {{ else if lt .Quantity 10 }}
-            <div class="cat-item__stock cat-item__stock--ends">Out soon</div>
-            {{ else if ge .Quantity 10 }}
-            <div class="cat-item__stock cat-item__stock--in">In stock</div>
-            {{ end }}
-          </div>
-          {{ if gt .Quantity 0 }}
-          <div class="cat-item__buy">
-            <form action="/cart/products/add" method="post">
-              <input type="hidden" name="product_id" value="{{ .ProductId }}">
-              <input type="hidden" name="buy_quantity" value="1">
-              <button type="submit" class="button cat-item__btn-buy"></button>
-            </form>
-          </div>
-          {{ end }}
-        </div>
-      </div>
-    </div>
-    {{ end }}
-  </div>
-  <div class="catalog__more">more items...</div>
-</div>
-{{ else }} Catalog is empty {{ end }}
+<div class="catalog"></div>
 {{ end }}
 
-{{ define "js" }}{{ end }}
+{{ define "js" }}
+<script src="assets/js/products.js"></script>
+{{ end }}

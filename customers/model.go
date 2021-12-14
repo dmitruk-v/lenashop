@@ -25,6 +25,22 @@ type CustomerWithCart struct {
 	CartId int
 }
 
+type FullCustomer struct {
+	CustomerId int
+	Email      string
+	Phone      sql.NullString
+	Address    string
+	Token      string
+	Cart       struct {
+		CartId   int
+		Products []struct {
+			ProductId     int
+			BuyQuantity   int
+			StockQuantity int
+		}
+	}
+}
+
 func NewCustomer(email string, phone string, address string, token string) Customer {
 	c := Customer{
 		Email:   email,
@@ -75,12 +91,13 @@ func CustomerByEmail(email string) (Customer, error) {
 
 func CustomerWithCartByEmail(email string) (CustomerWithCart, error) {
 	ctx := context.Background()
-	sqlQuery := `
-	SELECT customer.*, cart.cart_id FROM customer
-	INNER JOIN cart ON customer.customer_id = cart.customer_id
-	WHERE email = $1
+	q := `
+		SELECT customer.*, cart.cart_id
+		FROM customer
+		INNER JOIN cart ON customer.customer_id = cart.customer_id
+		WHERE email = $1
 	`
-	row := common.DbPool.QueryRow(ctx, sqlQuery, email)
+	row := common.DbPool.QueryRow(ctx, q, email)
 	var c CustomerWithCart
 	err := row.Scan(&c.CustomerId, &c.Email, &c.Phone, &c.Address, &c.Token, &c.CreatedAt, &c.UpdatedAt, &c.CartId)
 	if err != nil && err != pgx.ErrNoRows {

@@ -39,3 +39,7 @@ func (customer *Customer) AddOrder(cart Cart) {
 func (customer *Customer) AddToCart(product Product) {
 	customer.Cart.AddItem(product, 1)
 }
+
+func (customer *Customer) UpdateCartItem(productId int, buyQuantity int) {
+	customer.Cart.UpdateItem(productId, buyQuantity)
+}

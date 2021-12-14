@@ -19,3 +19,9 @@
 .link--light:active {
   color: #cccccc;
 }
+
+.link--disabled {
+  pointer-events: none;
+  text-decoration: none;
+  border: 0;
+}

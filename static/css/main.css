@@ -2,6 +2,7 @@
 @import "./form.css";
 @import "./link.css";
 @import "./button.css";
+@import "./utils.css";
 
 /* app
 -------------------------------------------------------------- */
@@ -92,6 +93,14 @@
 /* catalog
 --------------------------------------------------------------- */
 .catalog {}
+.catalog__options {
+  display: flex;
+  flex-flow: row wrap;
+  margin-bottom: 15px;
+}
+.catalog__opt {
+  margin-right: 15px;
+}
 .catalog__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(100px, 1fr));
@@ -177,42 +186,7 @@
   height: 24px;
   background: url("/assets/svg/shopping_cart_color_24dp.svg") center center no-repeat;
 }
-
-.cat-order {
-  display: flex;
-  flex-flow: row wrap;
-  margin-bottom: 15px;
-  font-size: 14px;
-}
-.cat-order__section {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  margin-right: 15px;
-}
-.cat-order__title {
-  margin-right: 15px;
-}
-.cat-order__list {
-  display: flex;
-  flex-flow: row wrap;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.cat-order__item {
-  margin-right: 15px;
-}
-.cat-order__link,
-.cat-order__link:link,
-.cat-order__link:visited {
-  color: #a1a1a1;
-}
-.cat-order__link:hover,
-.cat-order__link:active {
-  color: #000000;
-}
-
+  
 .cat-filter {}
 
 /* customers

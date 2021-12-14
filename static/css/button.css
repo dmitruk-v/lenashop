@@ -10,7 +10,7 @@
   line-height: 1;
   border: 0;
   vertical-align: middle;
-  background-color: #a1a1a1;
+  background-color: #b5b5b5;
   color: #ffffff;
   cursor: pointer;
   text-decoration: none;
@@ -18,7 +18,7 @@
 }
 .button:hover,
 .button:active {
-  background-color: #777777;
+  background-color: #a1a1a1;
 }
 
 .button--primary,

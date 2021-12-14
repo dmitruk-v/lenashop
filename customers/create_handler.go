@@ -81,8 +81,8 @@ func CreateHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		exp := time.Now().UTC().Add(time.Minute * 10).Format(http.TimeFormat)
-		w.Header().Add("Set-Cookie", fmt.Sprintf("customer=%s; Expires=%v; Secure; HttpOnly;", customer.Email, exp))
-		w.Header().Add("Set-Cookie", fmt.Sprintf("token=%v; Expires=%v; Secure; HttpOnly;", customer.Token, exp))
+		w.Header().Add("Set-Cookie", fmt.Sprintf("customer=%s; Expires=%v; HttpOnly;", customer.Email, exp))
+		w.Header().Add("Set-Cookie", fmt.Sprintf("token=%v; Expires=%v; HttpOnly;", customer.Token, exp))
 		tools.Render(w, "register-ok.page.html", okPayload)
 	}
 }

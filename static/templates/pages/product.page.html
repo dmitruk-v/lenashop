@@ -26,11 +26,13 @@
     {{ end }}
     <div class="product__buy">
       <div class="product__price">{{ $p.Price }} грн</div>
+      {{ if gt $p.Quantity 0 }}
       <form class="product__form" action="/cart/products/add" method="post">
         <input type="hidden" name="product_id" value="{{ $p.ProductId }}">
         <input type="hidden" name="buy_quantity" value="1">
         <button class="button button--primary" type="submit">Buy</button>
       </form>
+      {{ end }}
     </div>
   </div>
 </div>

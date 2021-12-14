@@ -15,6 +15,9 @@
 .form-cols__input {
   flex: 1
 }
+
+/* label
+-------------------------------------------------------------- */
 .control-label {
   display: inline-block;
   line-height: 1;
@@ -27,6 +30,8 @@
   line-height: 1;
   color: #ff0000;
 }
+/* input
+-------------------------------------------------------------- */
 .control-input {
   width: 100%;
   padding: 10px 12px;
@@ -36,4 +41,29 @@
 }
 .control-label + .control-input {
   margin-top: 5px;
+}
+/* select
+-------------------------------------------------------------- */
+.control-select {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+.control-select > select {
+  padding: 10px 38px 10px 12px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  appearance: none;
+}
+.control-select:after {
+  content: "";
+  position: absolute;
+  top: 11px;  
+  right: 15px;
+  transform: rotate(45deg);
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #555555;
+  border-bottom: 2px solid #555555;
+  pointer-events: none;
 }
